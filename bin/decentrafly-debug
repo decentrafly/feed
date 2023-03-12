@@ -110,8 +110,8 @@ function check_for_required_files() {
 }
 
 function check_env_format() {
-    # Wrong: READSB_ADDITIONAL_NET_CONNECTOR=feed.adsb.one,64004,beast_reduce_out,feed.theairtraffic.com,30004,beast_reduce_out
-    # Right: READSB_ADDITIONAL_NET_CONNECTOR=feed.adsb.one,64004,beast_reduce_out;feed.theairtraffic.com,30004,beast_reduce_out
+    # Wrong: READSB_ADDITIONAL_NET_CONNECTOR=feed.decentrafly.com,64004,beast_reduce_out,feed.decentrafly.com,30004,beast_reduce_out
+    # Right: READSB_ADDITIONAL_NET_CONNECTOR=feed.decentrafly.com,64004,beast_reduce_out;feed.decentrafly.com,30004,beast_reduce_out
     #check if "out," is in the string
     if grep -q "out," /opt/decentrafly/.env; then
         echo "[ fail] READSB_ADDITIONAL_NET_CONNECTOR is in the wrong format. Please use ; instead of ,"
