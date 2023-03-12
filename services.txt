@@ -1,8 +1,9 @@
-# adsblol/feed
+# decentrafly/feed
 # -----
 # Required containers
 # -----
 adsblol
+decentrafly
 readsb
 mlathub
 tar1090
