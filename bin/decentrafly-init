@@ -16,8 +16,8 @@ if [ ! $(id -u) = 0 ]; then
     exit 1
 fi
 
-# If /opt/adsblol does not exist, we first do an apt-get update and upgrade for good measure
-if [ ! -d /opt/adsblol ]; then
+# If /opt/decentrafly does not exist, we first do an apt-get update and upgrade for good measure
+if [ ! -d /opt/decentrafly ]; then
     apt-get update
     apt-get -y upgrade
 fi
@@ -39,24 +39,24 @@ if [ -f /var/run/reboot-required || -f /run/reboot-required ]; then
     exit 1
 fi
 
-# If /opt/adsblol does not exist, we create it
-if [ ! -d /opt/adsblol ]; then
+# If /opt/decentrafly does not exist, we create it
+if [ ! -d /opt/decentrafly ]; then
 
-    echo "[debug] creating /opt/adsblol"
-    git clone https://github.com/adsblol/feed /opt/adsblol
+    echo "[debug] creating /opt/decentrafly"
+    git clone https://github.com/decentrafly/feed /opt/decentrafly
 else
-    cd /opt/adsblol
+    cd /opt/decentrafly
     git fetch --all
     git pull
 fi
 
 # Add ourselves to /usr/local/bin
-FILES=$(ls /opt/adsblol/bin)
+FILES=$(ls /opt/decentrafly/bin)
 for file in $FILES; do
     # Check if the file exists, or the file exists but is not pointing to the right file
-    if [ ! -f /usr/local/bin/$file ] || [ ! $(readlink -f /usr/local/bin/$file) = "/opt/adsblol/bin/$file" ]; then
+    if [ ! -f /usr/local/bin/$file ] || [ ! $(readlink -f /usr/local/bin/$file) = "/opt/decentrafly/bin/$file" ]; then
         rm -f /usr/local/bin/$file
-        ln -sf /opt/adsblol/bin/$file /usr/local/bin/$file
+        ln -sf /opt/decentrafly/bin/$file /usr/local/bin/$file
     fi
 
 done
@@ -157,18 +157,18 @@ else
 fi
 
 #mkdirs
-mkdir -p /opt/adsblol/data/readsb/collectd \
-    /opt/adsblol/data/readsb/autogain \
-    /opt/adsblol/data/dump978/autogain \
-    /opt/adsblol/data/tar1090/globe_history \
-    /opt/adsblol/data/tar1090/timelapse1090 \
-    /opt/adsblol/data/planefence/config \
-    /opt/adsblol/data/planefence/html \
-    /opt/adsblol/data/rtlsdr-airband \
-    /opt/adsblol/data/acarshub \
-    /opt/adsblol/data/webproxy \
-    /opt/adsblol/data/vnstat \
-    /opt/adsblol/data/code-server
+mkdir -p /opt/decentrafly/data/readsb/collectd \
+    /opt/decentrafly/data/readsb/autogain \
+    /opt/decentrafly/data/dump978/autogain \
+    /opt/decentrafly/data/tar1090/globe_history \
+    /opt/decentrafly/data/tar1090/timelapse1090 \
+    /opt/decentrafly/data/planefence/config \
+    /opt/decentrafly/data/planefence/html \
+    /opt/decentrafly/data/rtlsdr-airband \
+    /opt/decentrafly/data/acarshub \
+    /opt/decentrafly/data/webproxy \
+    /opt/decentrafly/data/vnstat \
+    /opt/decentrafly/data/code-server
 
 chmod +x /usr/bin/containerd || true
 systemctl enable --now containerd || true
