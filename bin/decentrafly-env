@@ -2,7 +2,7 @@
 set -e
 
 function print_env() {
-    FILE=/opt/adsblol/.env
+    FILE=/opt/decentrafly/.env
     ENVS=(
         "ADSB_DONGLE_SERIAL"
         "READSB_NET_CONNECTOR"
@@ -19,46 +19,46 @@ function print_env() {
 }
 
 # If first argument is set,
-# adsblol-env set MYHOST 10.0.0.2
+# decentrafly-env set MYHOST 10.0.0.2
 function set_env() {
     # If value is empty, print a warning
     if [ -z "$3" ]; then
-        echo "[ warn] $2 is empty. If you want to unset it, use adsblol-env unset $2"
+        echo "[ warn] $2 is empty. If you want to unset it, use decentrafly-env unset $2"
         exit 1
     fi
 
     # Check if variable is already in the file
-    if grep -q "^$2=" /opt/adsblol/.env; then
+    if grep -q "^$2=" /opt/decentrafly/.env; then
         # Check if it is already set to this value
-        if grep -q "^$2=$3" /opt/adsblol/.env; then
+        if grep -q "^$2=$3" /opt/decentrafly/.env; then
             echo "[ info] $2 is already set to $3"
             exit 0
         fi
-        echo "[ info] $2 is currently set to $(grep $2 /opt/adsblol/.env | cut -d "=" -f 2)"
+        echo "[ info] $2 is currently set to $(grep $2 /opt/decentrafly/.env | cut -d "=" -f 2)"
         # If it is, replace it
-        sed -i "s/^$2=.*/$2=$3/" /opt/adsblol/.env
-        echo "[ info] $2 has now been changed to $(grep $2 /opt/adsblol/.env | cut -d "=" -f 2)"
+        sed -i "s/^$2=.*/$2=$3/" /opt/decentrafly/.env
+        echo "[ info] $2 has now been changed to $(grep $2 /opt/decentrafly/.env | cut -d "=" -f 2)"
     # If it is commented out (might be a space after the #)
-    elif grep -q "^# *$2=" /opt/adsblol/.env; then
+    elif grep -q "^# *$2=" /opt/decentrafly/.env; then
         echo "[ info] $2 is currently commented out"
         # Uncomment it
-        sed -i "s/^# *$2=.*/$2=$3/" /opt/adsblol/.env
-        echo "[ info] $2 has now been changed to $(grep $2 /opt/adsblol/.env | cut -d "=" -f 2)"
+        sed -i "s/^# *$2=.*/$2=$3/" /opt/decentrafly/.env
+        echo "[ info] $2 has now been changed to $(grep $2 /opt/decentrafly/.env | cut -d "=" -f 2)"
     else
         echo "[ info] $2 is not set"
         # If it is not in the file, add it
-        echo "$2=$3" >>/opt/adsblol/.env
-        echo "[ info] $2 has now been set to $(grep $2 /opt/adsblol/.env | cut -d "=" -f 2)"
+        echo "$2=$3" >>/opt/decentrafly/.env
+        echo "[ info] $2 has now been set to $(grep $2 /opt/decentrafly/.env | cut -d "=" -f 2)"
     fi
     exit 0
 }
 
 function unset_env() {
     # Check if variable is already in the file
-    if grep -q "^$2=" /opt/adsblol/.env; then
-        echo "[ info] $2 is currently set to $(grep $2 /opt/adsblol/.env | cut -d "=" -f 2)"
+    if grep -q "^$2=" /opt/decentrafly/.env; then
+        echo "[ info] $2 is currently set to $(grep $2 /opt/decentrafly/.env | cut -d "=" -f 2)"
         # If it is, remove the line completely
-        sed -i "/^$2=.*/d" /opt/adsblol/.env
+        sed -i "/^$2=.*/d" /opt/decentrafly/.env
         echo "[ info] $2 has now been unset"
     else
         echo "[ info] $2 is not set"
@@ -76,7 +76,7 @@ fi
 # If argument = set, change, edit, replace, modify, update:
 if [ "$1" == "set" ] || [ "$1" == "change" ] || [ "$1" == "edit" ] || [ "$1" == "replace" ] || [ "$1" == "modify" ] || [ "$1" == "update" ]; then
     if [ $# -ne 3 ]; then
-        echo "Usage: adsblol-env $1 <variable> <value>"
+        echo "Usage: decentrafly-env $1 <variable> <value>"
         exit 1
     fi
     set_env "$@"
@@ -86,7 +86,7 @@ fi
 # If argument = unset, remove, delete, clear:
 if [ "$1" == "unset" ] || [ "$1" == "remove" ] || [ "$1" == "delete" ] || [ "$1" == "clear" ]; then
     if [ $# -ne 2 ]; then
-        echo "Usage: adsblol-env $1 <variable>"
+        echo "Usage: decentrafly-env $1 <variable>"
         exit 1
     fi
     unset_env "$@"
@@ -95,9 +95,9 @@ fi
 
 function usage() {
     echo "[ info] Usage:"
-    echo "[ info]   adsblol-env list"
-    echo "[ info]   adsblol-env set <variable> <value>"
-    echo "[ info]   adsblol-env unset <variable>"
+    echo "[ info]   decentrafly-env list"
+    echo "[ info]   decentrafly-env set <variable> <value>"
+    echo "[ info]   decentrafly-env unset <variable>"
     exit 1
 }
 usage
