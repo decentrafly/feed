@@ -1,11 +1,11 @@
 #!/bin/bash
 set -e
-cd /opt/adsblol
+cd /opt/decentrafly
 
 function check_for_docker() {
     if ! command -v docker &>/dev/null; then
         echo "[ fail] Docker could not be found. Please install docker."
-        echo "[ run] adsblol-init"
+        echo "[ run] decentrafly-init"
         return 1
     fi
 }
@@ -41,7 +41,7 @@ function check_docker_running() {
 function check_for_sdr() {
     if ! command -v rtl_test &>/dev/null; then
         echo "[ fail] RTL-SDR could not be found. Please install rtl-sdr."
-        echo "[ run] adsblol-init"
+        echo "[ run] decentrafly-init"
         return 1
     fi
 }
@@ -55,20 +55,20 @@ function check_for_required_env_vars() {
     )
     for var in "${REQUIRED_ENV_VARS[@]}"; do
         # Check if it exists and not empty, then return with 0
-        if grep -q "^$var=" /opt/adsblol/.env && grep -q "^$var=.*$" /opt/adsblol/.env; then
+        if grep -q "^$var=" /opt/decentrafly/.env && grep -q "^$var=.*$" /opt/decentrafly/.env; then
             return 0
         fi
-        # Check if the variable is missing from /opt/adsblol/.env
-        if ! grep -q "^$var=" /opt/adsblol/.env; then
-            echo "[ fail] $var is missing in /opt/adsblol/.env"
+        # Check if the variable is missing from /opt/decentrafly/.env
+        if ! grep -q "^$var=" /opt/decentrafly/.env; then
+            echo "[ fail] $var is missing in /opt/decentrafly/.env"
             FAILED=1
         # Check if it there, but commented out
-        elif grep -q "^#$var=" /opt/adsblol/.env; then
-            echo "[ fail] $var is commented out in /opt/adsblol/.env"
+        elif grep -q "^#$var=" /opt/decentrafly/.env; then
+            echo "[ fail] $var is commented out in /opt/decentrafly/.env"
             FAILED=1
         # Check if it is there, but empty
-        elif grep -q "^$var=$" /opt/adsblol/.env; then
-            echo "[ fail] $var is empty in /opt/adsblol/.env"
+        elif grep -q "^$var=$" /opt/decentrafly/.env; then
+            echo "[ fail] $var is empty in /opt/decentrafly/.env"
             FAILED=1
         else
             echo "[ fail] $var is missing. Please report this bug."
@@ -80,17 +80,17 @@ function check_for_required_env_vars() {
 
 function check_for_unchanged_default_vars() {
     FAILED=0
-    if grep -q "^FEEDER_ALT_M=dd$" /opt/adsblol/.env; then
+    if grep -q "^FEEDER_ALT_M=dd$" /opt/decentrafly/.env; then
         echo "[ fail] FEEDER_ALT_M is set to the default value of dd. Please set it to your altitude in meters."
         FAILED=1
     fi
     # FEEDER_LAT
-    if grep -q "^FEEDER_LAT=dd.ddddd$" /opt/adsblol/.env; then
+    if grep -q "^FEEDER_LAT=dd.ddddd$" /opt/decentrafly/.env; then
         echo "[ fail] FEEDER_LAT is set to the default value of dd.ddddd. Please set it to your latitude."
         FAILED=1
     fi
     # FEEDER_LONG
-    if grep -q "^FEEDER_LONG=dd.ddddd$" /opt/adsblol/.env; then
+    if grep -q "^FEEDER_LONG=dd.ddddd$" /opt/decentrafly/.env; then
         echo "[ fail] FEEDER_LONG is set to the default value of dd.ddddd. Please set it to your longitude."
         FAILED=1
     fi
@@ -102,9 +102,9 @@ function check_for_required_files() {
         "services.txt" "docker-compose.yaml" ".env"
     )
     for file in "${REQUIRED_FILES[@]}"; do
-        # Check if it is set, non empty (and uncommented) on /opt/adsblol/.env
-        if ! [ -f "/opt/adsblol/$file" ]; then
-            echo "[ fail] $file is missing in /opt/adsblol/"
+        # Check if it is set, non empty (and uncommented) on /opt/decentrafly/.env
+        if ! [ -f "/opt/decentrafly/$file" ]; then
+            echo "[ fail] $file is missing in /opt/decentrafly/"
         fi
     done
 }
@@ -113,7 +113,7 @@ function check_env_format() {
     # Wrong: READSB_ADDITIONAL_NET_CONNECTOR=feed.adsb.one,64004,beast_reduce_out,feed.theairtraffic.com,30004,beast_reduce_out
     # Right: READSB_ADDITIONAL_NET_CONNECTOR=feed.adsb.one,64004,beast_reduce_out;feed.theairtraffic.com,30004,beast_reduce_out
     #check if "out," is in the string
-    if grep -q "out," /opt/adsblol/.env; then
+    if grep -q "out," /opt/decentrafly/.env; then
         echo "[ fail] READSB_ADDITIONAL_NET_CONNECTOR is in the wrong format. Please use ; instead of ,"
         echo "[ fail] Example: READSB_ADDITIONAL_NET_CONNECTOR=feed.adsb.one,64004,beast_reduce_out;feed.theairtraffic.com,30004,beast_reduce_out"
         return 1
@@ -122,24 +122,24 @@ function check_env_format() {
 
 function check_for_old_envs() {
     # Check for old envs
-    # For example, ADSBLOL_MLAT_PRIVACY is now ADSBLOL_MLAT_CONFIG
+    # For example, DECENTRAFLY_MLAT_PRIVACY is now DECENTRAFLY_MLAT_CONFIG
     OLD_NEW_ENVS=(
-        "ADSBLOL_MLAT_PRIVACY=ADSBLOL_MLAT_CONFIG"
+        "DECENTRAFLY_MLAT_PRIVACY=DECENTRAFLY_MLAT_CONFIG"
     )
     for env in "${OLD_NEW_ENVS[@]}"; do
         OLD_ENV=$(echo $env | cut -d= -f1)
         NEW_ENV=$(echo $env | cut -d= -f2)
-        if grep -q "^$OLD_ENV=" /opt/adsblol/.env; then
+        if grep -q "^$OLD_ENV=" /opt/decentrafly/.env; then
             echo "[ fail] $OLD_ENV is deprecated. Please use $NEW_ENV instead."
-            # if it is ADSBLOL_MLAT_PRIVACY, suggest:
-            if [ "$OLD_ENV" = "ADSBLOL_MLAT_PRIVACY" ]; then
+            # if it is DECENTRAFLY_MLAT_PRIVACY, suggest:
+            if [ "$OLD_ENV" = "DECENTRAFLY_MLAT_PRIVACY" ]; then
                 echo "[ fail] If you would like to keep privacy mode on (does not appear on map.adsb.lol)"
                 echo "[ fail] You can run:"
-                echo "[  run] adsblol-env unset ADSBLOL_MLAT_PRIVACY"
-                echo "[  run] adsblol-env set ADSBLOL_MLAT_CONFIG --privacy"
+                echo "[  run] decentrafly-env unset DECENTRAFLY_MLAT_PRIVACY"
+                echo "[  run] decentrafly-env set DECENTRAFLY_MLAT_CONFIG --privacy"
                 echo "[ else]"
                 echo "[ fail] If you would like to turn privacy mode off (appears on map.adsb.lol)"
-                echo "[  run] adsblol-env unset ADSBLOL_MLAT_CONFIG"
+                echo "[  run] decentrafly-env unset DECENTRAFLY_MLAT_CONFIG"
             fi
             return 1
         fi
@@ -148,23 +148,23 @@ function check_for_old_envs() {
 
 function check_beast_in_mlat_config() {
     # If there is a beast connection in the mlat config, it will not work
-    # Check if 'beast' is in the same line as '^ADSBLOL_ADDITIONAL_MLAT_CONFIG=
-    if grep -q "^ADSBLOL_ADDITIONAL_MLAT_CONFIG=.*,beast_.*" /opt/adsblol/.env; then
-        echo "[ fail] ADSBLOL_ADDITIONAL_MLAT_CONFIG is set to a beast connection. Please remove it."
+    # Check if 'beast' is in the same line as '^DECENTRAFLY_ADDITIONAL_MLAT_CONFIG=
+    if grep -q "^DECENTRAFLY_ADDITIONAL_MLAT_CONFIG=.*,beast_.*" /opt/decentrafly/.env; then
+        echo "[ fail] DECENTRAFLY_ADDITIONAL_MLAT_CONFIG is set to a beast connection. Please remove it."
         return 1
     fi
 }
 
 function check_altitude() {
     # Check if altitude is set to a number
-    if ! grep -q "^FEEDER_ALT_M=[0-9]*$" /opt/adsblol/.env; then
+    if ! grep -q "^FEEDER_ALT_M=[0-9]*$" /opt/decentrafly/.env; then
         echo "[ fail] FEEDER_ALT_M is not set to a number. Please set it to your altitude in meters."
         return 1
     fi
 }
 function check_altitude_ft() {
     # Check if FEEDER_ALT_FT exists, as it is not supported, error!
-    if grep -q "^FEEDER_ALT_FT=[0-9]*$" /opt/adsblol/.env; then
+    if grep -q "^FEEDER_ALT_FT=[0-9]*$" /opt/decentrafly/.env; then
         echo "[ fail] FEEDER_ALT_FT is set. Please remove it, as it is not supported."
         echo "[ fail] Please set your altitude in meters in FEEDER_ALT_M."
         return 1
@@ -178,16 +178,16 @@ function check_adsb_sdr_serial_exists(){
         echo "[ fail] No RTL-SDR dongles found. Please connect one and try again."
         return 1
     fi
-    ADSB_DONGLE_SERIAL=$(grep "^ADSB_DONGLE_SERIAL=" /opt/adsblol/.env | cut -d= -f2)
+    ADSB_DONGLE_SERIAL=$(grep "^ADSB_DONGLE_SERIAL=" /opt/decentrafly/.env | cut -d= -f2)
     if ! echo "$RTL_SERIALS" | grep -q "$ADSB_DONGLE_SERIAL"; then
         echo "[ fail] ADSB_DONGLE_SERIAL is set to $ADSB_DONGLE_SERIAL, but no RTL-SDR dongle with that serial number was found."
         echo "[ info] Your available dongles are:"
         for serial in $RTL_SERIALS; do
             echo "[ info] Serial: $serial"
-            echo "[  run] adsblol-env set ADSB_DONGLE_SERIAL $serial"
+            echo "[  run] decentrafly-env set ADSB_DONGLE_SERIAL $serial"
         done
         echo "[ info] If you would like to use a different dongle, please run one of the above commands to set the dongle serial."
-        echo "[ info] Then, run adsblol-up to restart the containers."
+        echo "[ info] Then, run decentrafly-up to restart the containers."
         return 1
     fi
     return 0
