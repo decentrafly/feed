@@ -14,7 +14,7 @@ If you are looking for a script similar to the ADSBExchange feeder to run on you
 
 Or run:
 ```
-curl -fsL -o /tmp/decentrafly.sh https://decentrafly/feed.sh && sudo bash /tmp/decentrafly.sh
+curl -fsL -o /tmp/decentrafly.sh https://decentrafly.com/feed.sh && sudo bash /tmp/decentrafly.sh
 ```
 
 ## Quick Start
