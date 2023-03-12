@@ -3,7 +3,7 @@ set -e
 # This script reads services.txt
 # It generates a docker compose up command enabling all the services that are not commented out
 
-cd /opt/adsblol
+cd /opt/decentrafly
 DOCKER_COMPOSE_CMD=""
 SERVICES=$(cat services.txt | grep -v "^#")
 for service in $SERVICES; do
