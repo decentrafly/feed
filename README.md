@@ -14,7 +14,7 @@ If you are looking for a script similar to the ADSBExchange feeder to run on you
 
 Or run:
 ```
-curl -fsL -o /tmp/decentrafly.sh https://adsb.lol/feed.sh && sudo bash /tmp/decentrafly.sh
+curl -fsL -o /tmp/decentrafly.sh https://decentrafly/feed.sh && sudo bash /tmp/decentrafly.sh
 ```
 
 ## Quick Start
@@ -146,8 +146,6 @@ This repo is largely based off of their work plus some command line interface to
 
 
 ## Feeding directly to other aggregators
-
-Where possible, adsb.lol commits to share data and ingest data directly with other aggregators which are willing to license their data openly.
 
 The `decentrafly` service can feed to other aggregators.
 
