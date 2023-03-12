@@ -50,8 +50,8 @@ services:
       - READSB_GRAPH_ALL_LARGE=yes
       - READSB_EXTRA_ARGS=api-port,8080;debug,nS
     volumes:
-      - /opt/adsblol/data/readsb/collectd:/run/collectd
-      - /opt/adsblol/data/readsb/autogain:/run/autogain
+      - /opt/decentrafly/data/readsb/collectd:/run/collectd
+      - /opt/decentrafly/data/readsb/autogain:/run/autogain
     tmpfs:
       - /run/readsb
       - /var/log
@@ -91,8 +91,8 @@ services:
       - READSB_GRAPH_ALL_LARGE=yes
       - READSB_EXTRA_ARGS=api-port,8080;debug,nS
     volumes:
-      - /opt/adsblol/data/readsb/collectd:/run/collectd
-      - /opt/adsblol/data/readsb/autogain:/run/autogain
+      - /opt/decentrafly/data/readsb/collectd:/run/collectd
+      - /opt/decentrafly/data/readsb/autogain:/run/autogain
     tmpfs:
       - /run/readsb
       - /var/log
@@ -119,7 +119,7 @@ services:
       - DUMP978_SDR_PPM=${ADSB_DONGLE_PPM}
       - AUTOGAIN_INITIAL_PERIOD=7200
     volumes:
-      - /opt/adsblol/data/dump978/autogain:/run/autogain
+      - /opt/decentrafly/data/dump978/autogain:/run/autogain
     tmpfs:
       - /run/readsb
 
@@ -151,7 +151,7 @@ services:
   ######################################################################################################################################
   # ADS-B Feeder Services. These containers feed ADS-B/UAT data to aggregator services.
   # Containers include:
-  # adsblol (multifeeder)
+  # decentrafly (multifeeder)
   # piaware (FlightAware)
   # fr24 (FlightRadar24)
   # pfclient (Planefinder)
@@ -160,19 +160,19 @@ services:
   # planewatch (Plane.Watch)
   # ADSBHub (ADSB Hub)
 
-  adsblol:
+  decentrafly:
     image: ghcr.io/sdr-enthusiasts/docker-multifeeder
     profiles:
-      - adsblol
+      - decentrafly
     depends_on:
       - readsb
-    container_name: adsblol
-    hostname: adsblol
+    container_name: decentrafly
+    hostname: decentrafly
     restart: always
     environment:
       - TZ=${FEEDER_TZ}
-      - READSB_NET_CONNECTOR=readsb,30105,beast_in;feed.adsb.lol,1337,beast_reduce_plus_out,uuid=${ADSBLOL_UUID};${ADSBLOL_ADDITIONAL_NET_CONNECTOR}
-      - MLAT_CONFIG=feed.adsb.lol,1338,39000,${ADSBLOL_MLAT_CONFIG};${ADSBLOL_ADDITIONAL_MLAT_CONFIG}
+      - READSB_NET_CONNECTOR=readsb,30105,beast_in;feed.decentrafly.com,1337,beast_reduce_plus_out,uuid=${DECENTRAFLY_UUID};${DECENTRAFLY_ADDITIONAL_NET_CONNECTOR}
+      - MLAT_CONFIG=feed.adsb.lol,1338,39000,${DECENTRAFLY_MLAT_CONFIG};${DECENTRAFLY_ADDITIONAL_MLAT_CONFIG}
       - MLAT_USER=${MLAT_SITE_NAME}
       - READSB_LAT=${FEEDER_LAT}
       - READSB_LON=${FEEDER_LONG}
@@ -367,15 +367,15 @@ services:
     ports:
       - 8082:80
     volumes:
-      - "/opt/adsblol/data/tar1090/globe_history:/var/globe_history"
-      - "/opt/adsblol/data/tar1090/timelapse1090:/var/timelapse1090"
-      - "/opt/adsblol/data/tar1090/collectd:/var/lib/collectd"
+      - "/opt/decentrafly/data/tar1090/globe_history:/var/globe_history"
+      - "/opt/decentrafly/data/tar1090/timelapse1090:/var/timelapse1090"
+      - "/opt/decentrafly/data/tar1090/collectd:/var/lib/collectd"
     tmpfs:
       - /run:exec,size=64M
       - /var/log
 
   planefence:
-    # Note - after initial startup, please edit /opt/adsblol/data/planefence/config/planefence.config. Then restart this container.
+    # Note - after initial startup, please edit /opt/decentrafly/data/planefence/config/planefence.config. Then restart this container.
     image: kx1t/planefence:dev
     profiles:
       - planefence
@@ -389,8 +389,8 @@ services:
     environment:
       - TZ=${FEEDER_TZ}
     volumes:
-      - /opt/adsblol/data/planefence/config:/usr/share/planefence/persist
-      - /opt/adsblol/data/planefence/html:/usr/share/planefence/html
+      - /opt/decentrafly/data/planefence/config:/usr/share/planefence/persist
+      - /opt/decentrafly/data/planefence/html:/usr/share/planefence/html
     tmpfs:
       - /run:rw,nosuid,nodev,exec,relatime,size=256M
       - /tmp:rw,nosuid,nodev,noexec,relatime,size=128M
@@ -433,7 +433,7 @@ services:
       - RTLSDRAIRBAND_CUSTOMCONFIG=true
     #      - ICECAST_CUSTOMCONFIG=true
     volumes:
-      - /opt/adsblol/data/rtlsdr-airband:/run/rtlsdr-airband
+      - /opt/decentrafly/data/rtlsdr-airband:/run/rtlsdr-airband
 
   ######################################################################################################################################
   # Additional aircraft related containers: ACARS/VDLM
@@ -526,7 +526,7 @@ services:
       - ENABLE_ACARS=external
       - ENABLE_VDLM=external
     volumes:
-      - /opt/adsblol/data/acarshub:/run/acars
+      - /opt/decentrafly/data/acarshub:/run/acars
     tmpfs:
       - /run:exec,size=64M
       - /var/log
@@ -536,7 +536,7 @@ services:
   # It also provides GeoIP filtering and Bot Filtering
   # Although it's possible (and easy) to add SSL connectivity for websites that are exposed to the Internet,
   # the setup below doesn't include this.
-  # Additionally, you can host your own web pages in this directory: /opt/adsblol/data/webproxy/html
+  # Additionally, you can host your own web pages in this directory: /opt/decentrafly/data/webproxy/html
 
   webproxy:
     image: kx1t/webproxy:dev
@@ -562,7 +562,7 @@ services:
     tmpfs:
       - /tmp:rw,nosuid,nodev,noexec,relatime,size=128M
     volumes:
-      - /opt/adsblol/data/webproxy:/run/nginx
+      - /opt/decentrafly/data/webproxy:/run/nginx
       - "/etc/localtime:/etc/localtime:ro"
       - "/etc/timezone:/etc/timezone:ro"
 
@@ -583,7 +583,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
-      - /opt/adsblol/data/vnstat:/var/lib/vnstat
+      - /opt/decentrafly/data/vnstat:/var/lib/vnstat
     environment:
       - HTTP_PORT=8685
       - HTTP_BIND=*
@@ -631,13 +631,13 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=${FEEDER_TZ}
-      - PASSWORD=${ADSBLOL_VSCODE_PASSWORD:-adsblol123}
-      - HASHED_PASSWORD=${ADSBLOL_VSCODE_HASHED_PASSWORD} #optional
-      - SUDO_PASSWORD=${ADSBLOL_VSCODE_SUDO_PASSWORD} #optional
-      - SUDO_PASSWORD_HASH=${ADSBLOL_VSCODE_PASSWORD_HASH} #optional
+      - PASSWORD=${DECENTRAFLY_VSCODE_PASSWORD:-decentrafly123}
+      - HASHED_PASSWORD=${DECENTRAFLY_VSCODE_HASHED_PASSWORD} #optional
+      - SUDO_PASSWORD=${DECENTRAFLY_VSCODE_SUDO_PASSWORD} #optional
+      - SUDO_PASSWORD_HASH=${DECENTRAFLY_VSCODE_PASSWORD_HASH} #optional
       - DEFAULT_WORKSPACE=/config/workspace #optional
     volumes:
-      - /opt/adsblol/data/code-server:/config
+      - /opt/decentrafly/data/code-server:/config
       - /:/host
     ports:
       - 8443:8443
