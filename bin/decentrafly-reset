@@ -1,5 +1,5 @@
 #!/bin/bash
 set -ex
-cd /opt/adsblol
+cd /opt/decentrafly
 git fetch --all
 git reset --hard origin/main
