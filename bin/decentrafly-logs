@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ex
-cd /opt/adsblol
-CMD=$(cat /opt/adsblol/cmdline.txt)
+cd /opt/decentrafly
+CMD=$(cat /opt/decentrafly/cmdline.txt)
 echo "Attaching to logs... You can Ctrl-C to exit"
 docker-compose $CMD logs $@
