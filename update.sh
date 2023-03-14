@@ -367,7 +367,7 @@ if grep -qs 'SERVER_HOSTPORT.*feed.adsb.lol' /etc/default/mlat-client &>/dev/nul
 fi
 
 if [[ -f /etc/default/adsblol ]]; then
-    sed -i -e 's/feed.adsb.lol,30004,beast_reduce_out,feed.adsb.lol,64004/feed.adsb.lol,30004,beast_reduce_out,feed.adsb.lol,64004/' /etc/default/adsblol || true
+    sed -i -e 's/feed.decentrafly.com,30004,beast_reduce_out,feed.decentrafly.com,64004/feed.adsb.lol,30004,beast_reduce_out,feed.decentrafly.com,64004/' /etc/default/adsblol || true
 fi
 
 
