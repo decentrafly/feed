@@ -3,7 +3,7 @@ set -e
 
 REPO="https://github.com/decentrafly/feed.git"
 BRANCH="masterx"
-IPATH=/usr/local/share/decentrafly
+IPATH=/usr/local/share/adsblol
 mkdir -p $IPATH
 
 if [ "$(id -u)" != "0" ]; then
