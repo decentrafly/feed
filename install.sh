@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-REPO="https://github.com/adsblol/feed.git"
-BRANCH="master"
-IPATH=/usr/local/share/adsblol
+REPO="https://github.com/decentrafly/feed.git"
+BRANCH="masterx"
+IPATH=/usr/local/share/decentrafly
 mkdir -p $IPATH
 
 if [ "$(id -u)" != "0" ]; then
@@ -16,6 +16,8 @@ fi
 if ! command -v git &>/dev/null || ! command -v wget &>/dev/null || ! command -v unzip &>/dev/null; then
     apt-get update || true; apt-get install -y --no-install-recommends --no-install-suggests git wget unzip || true
 fi
+
+
 function getGIT() {
     # getGIT $REPO $BRANCH $TARGET (directory)
     if [[ -z "$1" ]] || [[ -z "$2" ]] || [[ -z "$3" ]]; then echo "getGIT wrong usage, check your script or tell the author!" 1>&2; return 1; fi
