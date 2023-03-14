@@ -77,7 +77,7 @@ services:
     - /run:exec,size=64M,uid=1000,gid=1000
     - /var/log
 
-  # adsb_one:
+  # adsb_fi:
   #   image: ghcr.io/sdr-enthusiasts/docker-adsbexchange:latest_nohealthcheck
   #   tty: true
   #   container_name: adsb_one
@@ -95,9 +95,9 @@ services:
   #   - SITENAME=${ADSBX_SITENAME}
   #   - UUID=${ADSBX_UUID}
   #   - TZ=${FEEDER_TZ}
-  #   - ADSB_FEED_DESTINATION_HOSTNAME=feed.adsb.one
+  #   - ADSB_FEED_DESTINATION_HOSTNAME=feed.adsb.fi
   #   - ADSB_FEED_DESTINATION_PORT=64004
-  #   - MLAT_FEED_DESTINATION_HOSTNAME=feed.adsb.one
+  #   - MLAT_FEED_DESTINATION_HOSTNAME=feed.adsb.fi
   #   - MLAT_FEED_DESTINATION_PORT=64006
   #   - ADSB_FEED_SECONDARY_DESTINATION_HOSTNAME=
   #   - ADSB_FEED_SECONDARY_DESTINATION_PORT=
@@ -106,7 +106,7 @@ services:
   #   - /run:exec,size=64M,uid=1000,gid=1000
   #   - /var/log
 
-  # adsb_fi:
+  # decentrafly:
   #   image: ghcr.io/sdr-enthusiasts/docker-adsbexchange:latest_nohealthcheck
   #   tty: true
   #   container_name: adsb_fi
@@ -124,38 +124,9 @@ services:
   #   - SITENAME=${ADSBX_SITENAME}
   #   - UUID=${ADSBX_UUID}
   #   - TZ=${FEEDER_TZ}
-  #   - ADSB_FEED_DESTINATION_HOSTNAME=feed.adsb.fi
+  #   - ADSB_FEED_DESTINATION_HOSTNAME=feed.decentrafly.com
   #   - ADSB_FEED_DESTINATION_PORT=30004
-  #   - MLAT_FEED_DESTINATION_HOSTNAME=feed.adsb.fi
-  #   - MLAT_FEED_DESTINATION_PORT=31090
-  #   - ADSB_FEED_SECONDARY_DESTINATION_HOSTNAME=
-  #   - ADSB_FEED_SECONDARY_DESTINATION_PORT=
-  #   - STATS_DISABLE=1
-  #   tmpfs:
-  #   - /run:exec,size=64M,uid=1000,gid=1000
-  #   - /var/log
-
-   # theairtraffic:
-  #   image: ghcr.io/sdr-enthusiasts/docker-adsbexchange:latest_nohealthcheck
-  #   tty: true
-  #   container_name: theairtraffic
-  #   hostname: theairtraffic
-  #   restart: always
-  #   labels:
-  #   - "autoheal=true"
-  #   depends_on:
-  #   - readsb
-  #   environment:
-  #   - BEASTHOST=readsb
-  #   - LAT=${FEEDER_LAT}
-  #   - LONG=${FEEDER_LONG}
-  #   - ALT=${FEEDER_ALT_M}m
-  #   - SITENAME=${ADSBX_SITENAME}
-  #   - UUID=${ADSBX_UUID}
-  #   - TZ=${FEEDER_TZ}
-  #   - ADSB_FEED_DESTINATION_HOSTNAME=feed.theairtraffic.com
-  #   - ADSB_FEED_DESTINATION_PORT=30004
-  #   - MLAT_FEED_DESTINATION_HOSTNAME=feed.theairtraffic.com
+  #   - MLAT_FEED_DESTINATION_HOSTNAME=feed.decentrafly.com
   #   - MLAT_FEED_DESTINATION_PORT=31090
   #   - ADSB_FEED_SECONDARY_DESTINATION_HOSTNAME=
   #   - ADSB_FEED_SECONDARY_DESTINATION_PORT=
