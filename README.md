@@ -10,7 +10,7 @@
 ## 2: Install the adsblol feed client
 
 ```
-curl -L -o /tmp/LOLfeed.sh https://raw.githubusercontent.com/adsblol/feed/master/install.sh
+curl -L -o /tmp/LOLfeed.sh https://raw.githubusercontent.com/decentrafly/feed/masterx/install.sh
 sudo bash /tmp/LOLfeed.sh
 ```
 
@@ -48,7 +48,7 @@ sudo bash /usr/local/share/tar1090/uninstall.sh adsblol
 ### Update the feed client without reconfiguring
 
 ```
-curl -L -o /tmp/LOLupdate.sh https://raw.githubusercontent.com/adsblol/feed/master/update.sh
+curl -L -o /tmp/LOLupdate.sh https://raw.githubusercontent.com/decentrafly/feed/masterx/update.sh
 sudo bash /tmp/LOLupdate.sh
 ```
 
@@ -74,7 +74,7 @@ If the client is up to date it should not take as long as the original installat
 otherwise this will also update the client which will take a moment.
 
 ```
-curl -L -o /tmp/LOLfeed.sh https://raw.githubusercontent.com/adsblol/feed/master/install.sh
+curl -L -o /tmp/LOLfeed.sh https://raw.githubusercontent.com/decentrafly/feed/masterx/install.sh
 sudo bash /tmp/LOLfeed.sh
 ```
 
